@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="noindex, nofollow" name="robots" />
+  <meta content="课程练习：个人介绍、技能与作品门户。" name="description" />
+  <title>我的个人主页</title>
+  <link href="assets/favicon.svg" rel="icon" type="image/svg+xml" />
+  <style>
+    /* ========== 全局美化样式 ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --primary:#2563eb;
+      --text:#1f2937;
+      --text-light:#4b5563;
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --border:#e2e8f0;
+      --shadow:0 4px 14px rgba(0,0,0,0.08);
+      --shadow-hover:0 10px 28px rgba(0,0,0,0.12);
+      --radius:14px;
+    }
+    body {
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,"Microsoft YaHei",sans‑serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .container {
+      max-width: 1100px;
+      margin:0 auto;
+      padding:0 22px;
+    }
+    a {
+      text-decoration:none;
+      color:inherit;
+    }
+    ul,ol {
+      list-style-position: inside;
+    }
+    /* 跳过链接无障碍 */
+    .skip-link {
+      position:absolute;
+      top:-40px;
+      left:0;
+      background:#2563eb;
+      color:white;
+      padding:8px 14px;
+      z-index:999;
+    }
+    .skip-link:focus { top:0; }
+    /* 阅读进度条 */
+    .reading-progress {
+      position:fixed;
+      top:0;
+      left:0;
+      height:4px;
+      background-color:#3b82f6;
+      width:0%;
+      z-index: 100;
+    }
+    /* 导航栏 固定顶部 */
+    .site-header {
+      position:sticky;
+      top:0;
+      background:rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px);
+      box-shadow:0 1px 4px rgba(0,0,0,0.06);
+      z-index:90;
+    }
+    .header-inner {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      height:64px;
+    }
+    .brand {
+      font-size:1.2rem;
+      font-weight:700;
+      color:var(--primary);
+    }
+    nav[aria-label="主导航"] a {
+      margin-left:22px;
+      color:var(--text-light);
+      transition: color 0.22s;
+    }
+    nav[aria-label="主导航"] a:hover {
+      color:var(--primary);
+    }
+    @media(max-width:768px){
+      .header-inner { flex-direction:column;height:auto;padding:12px 0;gap:8px;}
+      nav a { margin:0 8px !important; font-size:0.92rem;}
+    }
+    /* Hero首页区块 */
+    .hero {
+      padding:60px 0 40px;
+    }
+    .hero-top {
+      /* 删除头像后不再左右布局，直接流式 */
+    }
+    .hero-copy h1 {
+      font-size:2.4rem;
+      margin-bottom:10px;
+    }
+    .hero-copy h1 span {
+      font-weight:400;
+      color:var(--text-light);
+      font-size:1.4rem;
+      margin-left:10px;
+    }
+    .hero-role {
+      font-size:1.1rem;
+      color:var(--primary);
+      font-weight:500;
+    }
+    .hero-school {
+      margin-top:6px;
+      color:var(--text-light);
+    }
+    .research-direction {
+      margin-top:32px;
+      background:var(--card);
+      padding:20px 24px;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .eyebrow {
+      display:inline-block;
+      font-size:0.86rem;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      color:var(--primary);
+      font-weight:600;
+      margin-bottom:8px;
+    }
+    .profile-details {
+      margin-top:24px;
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+      gap:14px;
+    }
+    .profile-details > div {
+      background:var(--card);
+      padding:16px 18px;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .profile-details span {
+      display:block;
+      font-size:0.84rem;
+      color:var(--text-light);
+    }
+    /* 通用section区块 */
+    .section {
+      padding:50px 0;
+    }
+    .section-heading h2 {
+      font-size:1.7rem;
+      margin-bottom:26px;
+      position:relative;
+      padding-bottom:8px;
+    }
+    .section-heading h2::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:52px;
+      height:3px;
+      background-color:var(--primary);
+      border-radius:2px;
+    }
+    .section-content {
+      background:var(--card);
+      padding:28px;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    /* 经历项目 */
+    .experience-item,.research-item {
+      margin-bottom:22px;
+    }
+    .experience-heading {
+      display:flex;
+      justify-content:space-between;
+      font-weight:600;
+    }
+    time {
+      color:var(--text-light);
+      font-weight:400;
+    }
+    /* 技能列表 */
+    .skills-list li {
+      padding:10px 0;
+      border-bottom:1px solid var(--border);
+    }
+    .skills-list li:last-child { border:none; }
+
+    /* 学习记录、教学 */
+    .teaching-group ol,.references {
+      padding-left:12px;
+    }
+    .teaching-group li,.references li {
+      padding:6px 0;
+    }
+    /* 返回顶部 */
+    .to-top {
+      position:fixed;
+      bottom:26px;
+      right:24px;
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      border:none;
+      background-color:var(--primary);
+      color:white;
+      font-size:18px;
+      box-shadow:var(--shadow);
+      cursor:pointer;
+      display:none;
+    }
+    .section-indicator {
+      position:fixed;
+      bottom:80px;
+      left:20px;
+      background:#222;
+      color:white;
+      padding:6px 12px;
+      border-radius:6px;
+      font-size:0.85rem;
+      display:none;
+    }
+    /* 页脚 */
+    footer {
+      background:#1e293b;
+      color:#cbd5e1;
+      padding:32px 0;
+      margin-top:20px;
+    }
+    .footer-inner {
+      display:flex;
+      gap:26px;
+    }
+    .footer-inner a:hover { color:#60a5fa; }
+  </style>
+  <script src="works-data.js" defer></script>
+  <script src="works-render.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div class="reading-progress" id="reading-progress"></div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#about">我的主页</a>
+      <nav aria-label="主导航">
+        <a href="#about">关于</a>
+        <a href="#experience">经历</a>
+        <a href="#projects">科研</a>
+        <a href="#skills">技能</a>
+        <a href="#teaching">教学</a>
+        <a href="#publications">成果</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" id="about">
+      <div class="container">
+        <div class="hero-top">
+          <div class="hero-copy">
+            <h1>钟毅 <span>ZhongYi</span></h1>
+            <p class="hero-role">软件技术专业学生 · 前端开发学习者</p>
+            <p class="hero-school">广东省珠海广东科学技术职业学校 · 25昇腾 ai 班级</p>
+          </div>
+        </div>
+        <div class="research-direction" id="research-direction">
+          <span class="eyebrow">学习方向</span>
+          <p>HTML5、CSS3、JavaScript，正在学习 Git、数据库与网站部署。</p>
+        </div>
+        <div class="profile-details">
+          <div>
+            <span>学习阶段</span>
+            <p>在校学习</p>
+          </div>
+          <div>
+            <span>所在城市</span>
+            <p>珠海</p>
+          </div>
+          <div>
+            <span>联系</span>
+            <p>1353246262</p>
+          </div>
+          <div>
+            <span>学校地址</span>
+            <p>广东省珠海广东科学技术职业学校</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="experience">
+      <div class="container">
+        <header class="section-heading">
+          <h2>教育与工作经历</h2>
+        </header>
+        <div class="section-content">
+          <div class="experience-item">
+            <p class="experience-heading">
+              <strong>广东省珠海广东科学技术职业学校 · 软件技术专业</strong>
+              <time>在读</time>
+            </p>
+            <p class="experience-detail">学习网页开发，用项目记录成长。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="projects">
+      <div class="container">
+        <header class="section-heading">
+          <h2>项目经历</h2>
+        </header>
+        <div class="section-content">
+          <article class="research-item">
+            <h3><time>课程练习</time> 个人主页</h3>
+            <p>项目内容：制作自己的网页，展示资料与作品，记录修改、测试与发布过程。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="skills">
+      <div class="container">
+        <header class="section-heading">
+          <h2>技能与实践</h2>
+        </header>
+        <div class="section-content">
+          <ul class="skills-list">
+            <li><strong>网页内容</strong> HTML5 结构、图片、链接。</li>
+            <li><strong>页面样式</strong> CSS3 字体、颜色、响应式布局。</li>
+            <li><strong>开发过程</strong> JavaScript、Git、检查与部署。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="teaching">
+      <div class="container">
+        <header class="section-heading">
+          <h2>学习与实践</h2>
+        </header>
+        <div class="section-content">
+          <div class="teaching-group">
+            <h3>本学期目标</h3>
+            <ol>
+              <li>每次课完成一个可运行的小改动。</li>
+              <li>能解释自己修改的 HTML、CSS 和 JavaScript。</li>
+              <li>使用 Git 记录版本，让作品能被别人访问。</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="publications">
+      <div class="container">
+        <header class="section-heading">
+          <h2>学习记录</h2>
+        </header>
+        <div class="section-content">
+          <div class="publication-group">
+            <h3>我的记录</h3>
+            <ol class="references">
+              <li>完成自己第一版个人主页，搞懂网页基础结构怎么搭</li>
+              <li>练习写CSS，学会调整页面颜色、圆角还有卡片阴影</li>
+              <li>接触简单JS，遇到报错会上网查资料慢慢调试解决</li>
+              <li>学习Git命令，学会把本地代码上传到GitHub仓库</li>
+              <li>尝试GitHub Pages部署，把网页发布到网上公开访问</li>
+              <li>后续继续多写小项目，积累更多前端实战经验</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <p aria-live="polite" class="section-indicator" id="section-indicator"></p>
+  <button aria-label="返回页面顶部" class="to-top" id="to-top" type="button">↑</button>
+  <footer>
+    <div class="container footer-inner">
+      <a href="#about">回到顶部</a>
+    </div>
+  </footer>
+</body>
+</html>
